@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#name {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(239, 223, 223, 0.6);
+  color: #f1f1f1f1;
+  text-align: center;
+  padding: 0.6rem 0.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  border: none;
+}
