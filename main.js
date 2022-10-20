@@ -1,34 +1,24 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
-/**
- * Base
- */
+const canvas = document.querySelector("canvas");
 
-// Canvas
-const canvas = document.querySelector('canvas');
-
-// Scene
 const scene = new THREE.Scene();
 
-/**
- * Textures
- */
+// Textures
 const textureLoader = new THREE.TextureLoader();
-const textMatcapTexture = textureLoader.load('/textures/matcaps/metal.png');
-const sphereMatcapTexture = textureLoader.load('/textures/matcaps/gold.png');
+const textMatcapTexture = textureLoader.load("/textures/matcaps/metal.png");
+const sphereMatcapTexture = textureLoader.load("/textures/matcaps/gold.png");
 
-/**
- * Font
- */
+// Font
 const fontLoader = new FontLoader();
 
-const input = document.getElementById('name');
+const input = document.getElementById("name");
 let name = input.value;
 
-function callbackNicely(font) {
+function createTextureMesh(font) {
   const textGeometry = new TextGeometry(name, {
     font: font,
     size: 0.5,
@@ -46,17 +36,17 @@ function callbackNicely(font) {
     matcap: textMatcapTexture,
   });
   const text = new THREE.Mesh(textGeometry, textMaterial);
-  text.name = 'text';
+  text.name = "text";
 
-  scene.remove(scene.getObjectByName('text')).add(text);
+  scene.remove(scene.getObjectByName("text")).add(text);
 }
 
-input.addEventListener('input', () => {
+input.addEventListener("input", () => {
   name = input.value;
-  fontLoader.load('/fonts/gentilis_regular.typeface.json', callbackNicely);
+  fontLoader.load("/fonts/gentilis_regular.typeface.json", createTextureMesh);
 });
 
-fontLoader.load('/fonts/gentilis_regular.typeface.json', callbackNicely);
+fontLoader.load("/fonts/gentilis_regular.typeface.json", createTextureMesh);
 
 // Spheres
 const sphereGeometry = new THREE.SphereGeometry(0.3, 50, 16);
@@ -77,15 +67,13 @@ for (let i = 0; i < 100; i++) {
   scene.add(sphere);
 }
 
-/**
- * Sizes
- */
+// Sizes
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   // Update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
@@ -99,9 +87,6 @@ window.addEventListener('resize', () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-/**
- * Camera
- */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -118,9 +103,7 @@ scene.add(camera);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
-/**
- * Renderer
- */
+// Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas,
   antialias: true,
@@ -128,9 +111,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-/**
- * Animate
- */
+// Animate
 const clock = new THREE.Clock();
 const cameraDistanceLimit = 1;
 const cameraMovementSpeed = 0.2;
@@ -145,8 +126,6 @@ const tick = () => {
     Math.sin(elapsedTime * cameraMovementSpeed) * cameraDistanceLimit;
   camera.position.y =
     Math.cos(elapsedTime * cameraMovementSpeed) * cameraDistanceLimit;
-  // camera.position.z =
-  //   Math.cos(elapsedTime * cameraMovementSpeed) * cameraDistanceLimit;
 
   // Render
   renderer.render(scene, camera);
